@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { compare } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
+import { JwtPayload, sign, verify } from 'jsonwebtoken';
 import UserService from '../services/UserServices';
 
 const userService = new UserService();
@@ -32,5 +32,13 @@ export default class UserController {
     return res.status(200).json({ token });
   };
 
-  getAll = async (req: Request, res: Response) => res.status(200).json({ mensagem: 'oi' });
+  verifyLogin = async (req: Request, res: Response) => {
+    const token = req.header('Authorization');
+
+    if (!token) return res.status(401).json({ message: 'unauthorized' });
+
+    const { role } = verify(token as string, jwtSecretKey as string) as JwtPayload;
+
+    return res.status(200).json({ role });
+  };
 }
