@@ -37,8 +37,8 @@ export default class UserController {
 
     if (!token) return res.status(401).json({ message: 'unauthorized' });
 
-    const { role } = verify(token as string, jwtSecretKey as string) as JwtPayload;
+    const payload = await verify(token as string, jwtSecretKey as string) as JwtPayload;
 
-    return res.status(200).json({ role });
+    return res.status(200).json({ role: payload.role });
   };
 }
