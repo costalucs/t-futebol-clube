@@ -69,13 +69,15 @@ describe('Testando a rota /login', () => {
       chai.expect(response.body).to.deep.equal({ message: 'unauthorized' });
     });
     it('testando a rota /login/validate', async () => {
-      sinon.stub(jwt, 'verify').resolves('admin');
+      sinon.stub(jwt, 'verify').resolves({ role: 'admin', email: 'admin@admin.com', iat: 1666811193 });
 
       const response = await chai
-        .request(app).get('/login/validate')
-        .set({ "Authorization": tokenResponse.token })
+        .request(app)
+        .get('/login/validate')
+        .set({'Authorization': `${tokenResponse.token}`})      
 
       chai.expect(response.status).to.be.equal(200);
+      chai.expect(response.body).to.deep.equal({ role: 'admin' });
     });
   })
 });
