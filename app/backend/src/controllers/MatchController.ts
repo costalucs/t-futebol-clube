@@ -5,7 +5,18 @@ const matchServices = new MatchServices();
 
 export default class MatchController {
   getAll = async (req: Request, res: Response) => {
-    const matches = await matchServices.getAll();
+    const { inProgress } = req.query;
+
+    let matches;
+    if (inProgress) {
+      if (inProgress === 'true') {
+        matches = await matchServices.getMatches(true);
+        return res.status(200).json(matches);
+      }
+      matches = await matchServices.getMatches(false);
+      return res.status(200).json(matches);
+    }
+    matches = await matchServices.getAll();
 
     return res.status(200).json(matches);
   };

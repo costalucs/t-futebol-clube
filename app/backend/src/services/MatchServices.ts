@@ -21,4 +21,26 @@ export default class MatchServices {
     });
     return matches;
   };
+
+  getMatches = async (inProgress: boolean): Promise<IMatch[] | null> => {
+    const matches = await this.model.findAll(
+      {
+        include: [
+          {
+            model: Team,
+            as: 'teamHome',
+            attributes: { exclude: ['id'] },
+          },
+          {
+            model: Team,
+            as: 'teamAway',
+            attributes: { exclude: ['id'] },
+          },
+        ],
+        where: { inProgress },
+
+      },
+    );
+    return matches;
+  };
 }
