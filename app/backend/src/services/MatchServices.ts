@@ -43,4 +43,19 @@ export default class MatchServices {
     );
     return matches;
   };
+
+  createMatch = async (matchInfo: Match):Promise<Match | null> => {
+    const match = await this.model.create(matchInfo);
+    console.log(match);
+
+    return match;
+  };
+
+  finishMatch = async (id: string): Promise<null> => {
+    await this.model.update(
+      { inProgress: false },
+      { where: { id } },
+    );
+    return null;
+  };
 }
