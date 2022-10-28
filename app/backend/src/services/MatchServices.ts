@@ -58,4 +58,14 @@ export default class MatchServices {
     );
     return null;
   };
+
+  updateMatch = async (id:string, homeGoal: number, awayGoal:number): Promise<number | null> => {
+    const [match] = await this.model.update(
+      { homeTeamGoals: homeGoal,
+        awayTeamGoals: awayGoal },
+      { where: { id } },
+    );
+
+    return match;
+  };
 }

@@ -7,6 +7,7 @@ const matchController = new MatchController();
 const middleware = new AuthToken();
 
 matchRoutes.get('/matches', matchController.getAll);
+matchRoutes.patch('/matches/:id', matchController.updateMatch);
 matchRoutes.patch('/matches/:id/finish', matchController.finishMatch);
 matchRoutes.post('/matches', middleware.verifyToken, matchController.addMatch);
 
