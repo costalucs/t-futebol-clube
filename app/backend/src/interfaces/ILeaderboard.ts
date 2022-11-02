@@ -9,6 +9,6 @@ export interface ILeaderboard {
   goalsFavor: number,
   goalsOwn: number,
   goalsBalance: number,
-  efficiency?: number
+  efficiency: number
 
 }
