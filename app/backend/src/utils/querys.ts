@@ -10,9 +10,9 @@ SELECT
     SUM(matches.home_team_goals) 'goalsFavor',
     SUM(matches.away_team_goals) 'goalsOwn',
     SUM(matches.home_team_goals - matches.away_team_goals) 'goalsBalance',
-    ((SUM(matches.home_team_goals > matches.away_team_goals) * 3 + 
+    FORMAT(((SUM(matches.home_team_goals > matches.away_team_goals) * 3 + 
     SUM(matches.home_team_goals = matches.away_team_goals)) / 
-    ((COUNT(matches.home_team)) * 3) * 100) efficiency
+    ((COUNT(matches.home_team)) * 3) * 100),2) efficiency
     FROM
     teams team
         INNER JOIN
@@ -34,9 +34,9 @@ SELECT
     SUM(matches.away_team_goals) 'goalsFavor',
     SUM(matches.home_team_goals) 'goalsOwn',
     SUM(matches.away_team_goals - matches.home_team_goals) 'goalsBalance',
-    ((SUM(matches.away_team_goals > matches.home_team_goals) * 3 
+    FORMAT(((SUM(matches.away_team_goals > matches.home_team_goals) * 3 
     + SUM(matches.home_team_goals = matches.away_team_goals)) / 
-    ((COUNT(matches.away_team)) * 3) * 100) efficiency
+    ((COUNT(matches.away_team)) * 3) * 100),2) efficiency
 FROM
     teams team
         INNER JOIN

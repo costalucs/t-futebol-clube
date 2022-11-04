@@ -37,9 +37,9 @@ function combineTable(homeTable: ILeaderboard[], awayTable: ILeaderboard[]) {
       efficiency: efficiencyCalc(
         (+teamHome.totalPoints) + (+awayTeam.totalPoints),
         (+teamHome.totalGames) + (+awayTeam.totalGames),
-      ) };
+      ).toFixed(2) };
   });
-  return sortTable(table as ILeaderboard[]);
+  return sortTable(table as unknown as ILeaderboard[]);
 }
 
 export default combineTable;
