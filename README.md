@@ -9,6 +9,50 @@ Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua cr
 - quais arquivos/pastas foram desenvolvidos pela Trybe.
 -->
 
+# Apresentação
+
+Este é um projeto da [Trybe](https://www.betrybe.com/) que foi desenvolvido no módulo de Back-end do curso de Desenvolvimento Web FullStack.
+O TFC é um site informativo sobre partidas e classificações de futebol. Nele foi desenvolvida uma API utilizando o método ***TDD*** (Test Driven Development) e feita a sua integração com um front-end (já estruturado e disponibilizao pela Trybe) e com um banco de dados ***MySQL***, usando ORM Sequelize.
+
+## Como rodar o projeto na sua máquina:
+
+<details>
+<summary><strong> ⚠️ Configurações mínimas para rodar o projeto</strong></summary>
+<br/>
+Na sua máquina você deve ter:
+
+- Sistema Operacional Distribuição Unix;
+- Node versão igual ou superior à 16.14.0 LTS;
+- Docker;
+- Docker-compose versão igual ou superior à 1.29.2.
+</details>
+
+1. Navegue até o local onde deseja clonar o repositório e utilize o **git clone**:
+```
+git clone git@github.com:costalucs/t-futebol-clube.git
+```
+
+2. Acesse o diretório do projeto **project-trybe-futebol-clube** e instale as dependências necessárias:
+```
+cd cd t-futebol-clube/
+npm install
+```
+
+3. Por fim, suba o container Docker para rodar os serviços utilizando o comando:
+```
+npm run compose:up
+```
+
+> ℹ️ Ao subir a aplicação, o serviço de Front-end estará rodando na port 3000 da sua máquina, o Back-end estará rodando na porta 3001 e o banco de dados MySQL estará rodando na porta 3002.
+
+4. Para rodar os testes de integração e verificar a sua cobertura são utilizados os seguintes comandos:
+
+```
+cd app/backend
+npm run test:coverage
+```
+
+
 ## Endpoints da API:
 
 #### Login
