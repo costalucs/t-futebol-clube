@@ -1,0 +1,72 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API do Projeto Trybe futebol Clube",
+    "description": "Essa API tem com objetivo manipulação de placares de jogos de futebol e vizualização da tabela do campeonato",
+    "termsOfService": "http://localhost:3001/terms",
+    "contact": {
+      "email": "costaldes@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/",
+      "description": "API test"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "sumary": "User Login",
+        "description": "Rota responsável por logar usuário possibilitanto editar e finalizar jogos",
+        "tags": [
+          "user"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "email": "admin@admin.com",
+                    "password": "secret_admin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "All fields must be filled"
+          },
+          "401": {
+            "description": "Incorrect email or password"
+          },
+          "200": {
+            "description": "token"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
