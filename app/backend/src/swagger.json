@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "API do Projeto Trybe futebol Clube",
+    "title": "API do Projeto Trybe Futebol Clube",
     "description": "Essa API tem com objetivo manipulação de placares de jogos de futebol e vizualização da tabela do campeonato",
     "termsOfService": "http://localhost:3001/terms",
     "contact": {
@@ -35,6 +35,12 @@
                     "email": "admin@admin.com",
                     "password": "secret_admin"
                   }
+                },
+                "invalidUser": {
+                  "value": {
+                    "email": "teste@admin.com",
+                    "password": "secret_admin"
+                  }
                 }
               }
             }
@@ -48,7 +54,69 @@
             "description": "Incorrect email or password"
           },
           "200": {
-            "description": "token"
+            "description": "token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"object",
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams": {
+      "get": {
+        "sumary": "Rota GET teams.",
+        "description": "Rota responsável por listar os times.",
+        "tags": [
+          "teams"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de times",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Team"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/{id}": {
+      "get": {
+        "sumary": "Rota GET teams.",
+        "description": "Rota responsável por listar os times.",
+        "tags": [
+          "teams"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Nome do time pelo ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de times",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Team"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -63,6 +131,25 @@
             "type": "string"
           },
           "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Token": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "Team": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "teamName": {
             "type": "string"
           }
         }
