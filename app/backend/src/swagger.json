@@ -289,6 +289,75 @@
           }
         }
       }
+    },
+    "/leaderboard/home": {
+      "get": {
+        "sumary": "Rota get tabela com os jogos do time em casa",
+        "description": "Rota responsável por mostrar a tabela contabilizando somente os jogos do time como mandante.",
+        "tags": [
+          "leaderboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista Tabela",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Leaderboard"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/leaderboard/away": {
+      "get": {
+        "sumary": "Rota get tabela com os jogos do time fora de casa",
+        "description": "Rota responsável por mostrar a tabela contabilizando somente os jogos do time como visitante.",
+        "tags": [
+          "leaderboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista Tabela",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Leaderboard"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/leaderboard": {
+      "get": {
+        "sumary": "Rota get tabela geral",
+        "description": "Rota responsável por mostrar a tabela geral contabilizando todos os jogos finalizados",
+        "tags": [
+          "leaderboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista Tabela",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Leaderboard"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -377,6 +446,41 @@
             "type": "number"
           },
           "awayTeamGoals": {
+            "type": "number"
+          }
+        }
+      },
+      "Leaderboard": {
+        "type": "object", 
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "totalPoints": {
+            "type": "number"
+          },
+          "totalGames": {
+            "type": "number"
+          },
+          "totalVictories": {
+            "type": "number"
+          },
+          "totalDraws": {
+            "type": "number"
+          },
+          "totalLosses": {
+            "type": "number"
+          },
+          "goalsFavor": {
+            "type": "number"
+          },
+          "goalsOwn": {
+            "type": "number"
+          },
+          "goalsBalance": {
+            "type": "number"
+          },
+          "efficiency": {
             "type": "number"
           }
         }
