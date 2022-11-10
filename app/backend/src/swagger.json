@@ -1,0 +1,497 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API do Projeto Trybe Futebol Clube",
+    "description": "Essa API tem com objetivo manipulação de placares de jogos de futebol e vizualização da tabela do campeonato",
+    "termsOfService": "http://localhost:3001/terms",
+    "contact": {
+      "email": "costaldes@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/",
+      "description": "API test"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "sumary": "User Login",
+        "description": "Rota responsável por logar usuário possibilitanto editar e finalizar jogos",
+        "tags": [
+          "login"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "email": "admin@admin.com",
+                    "password": "secret_admin"
+                  }
+                },
+                "invalidUser": {
+                  "value": {
+                    "email": "teste@admin.com",
+                    "password": "secret_admin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "All fields must be filled"
+          },
+          "401": {
+            "description": "Incorrect email or password"
+          },
+          "200": {
+            "description": "token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams": {
+      "get": {
+        "sumary": "Rota GET teams.",
+        "description": "Rota responsável por listar os times.",
+        "tags": [
+          "teams"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de times",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Team"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/{id}": {
+      "get": {
+        "sumary": "Rota GET teams.",
+        "description": "Rota responsável por listar os times.",
+        "tags": [
+          "teams"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Nome do time pelo ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de times",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Team"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/matches": {
+      "get": {
+        "sumary": "Rota get Matches",
+        "description": "Rota responsável por listar os jogos em progresso e finalizados",
+        "tags": [
+          "matches"
+        ],
+        "parameters": [
+          {
+            "name": "inProgress",
+            "in": "query",
+            "description": "Busque as partidas finalizadas ou em andamento",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de jogos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Match"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/matches/{id}/finish": {
+      "patch": {
+        "sumary": "Rota patch finalizar partida",
+        "description": "Rota responsável por finalizar uma partida. Necessário autenticação",
+        "tags": [
+          "matches"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Finalize uma partida pelo ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Finalizar partida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/match": {
+      "post": {
+        "sumary": "Rota post Matches",
+        "description": "Rota responsável por adicionar uma partida",
+        "tags": [
+          "matches"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Match"
+              },
+              "examples": {
+                "validMatch": {
+                  "value": {
+                    "homeTeam": 16,
+                    "awayTeam": 8,
+                    "homeTeamGoals": 2,
+                    "awayTeamGoals": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Adicionar Partida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Match"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Não existe time com o id disponibilizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/matches/{id}": {
+      "patch": {
+        "sumary": "Rota patch editar partida",
+        "description": "Rota responsável por editar uma partida. Necessário autenticação",
+        "tags": [
+          "matches"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Edite uma partida pelo ID",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditMatch"
+              },
+              "examples": {
+                "validMatch": {
+                  "value": {
+                    "homeTeamGoals": 1,
+                    "awayTeamGoals": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Editar partida",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/leaderboard/home": {
+      "get": {
+        "sumary": "Rota get tabela com os jogos do time em casa",
+        "description": "Rota responsável por mostrar a tabela contabilizando somente os jogos do time como mandante.",
+        "tags": [
+          "leaderboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista Tabela",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Leaderboard"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/leaderboard/away": {
+      "get": {
+        "sumary": "Rota get tabela com os jogos do time fora de casa",
+        "description": "Rota responsável por mostrar a tabela contabilizando somente os jogos do time como visitante.",
+        "tags": [
+          "leaderboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista Tabela",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Leaderboard"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/leaderboard": {
+      "get": {
+        "sumary": "Rota get tabela geral",
+        "description": "Rota responsável por mostrar a tabela geral contabilizando todos os jogos finalizados",
+        "tags": [
+          "leaderboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista Tabela",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Leaderboard"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Token": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "Team": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "teamName": {
+            "type": "string"
+          }
+        }
+      },
+      "Match": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "homeTeam": {
+            "type": "number"
+          },
+          "homeTeamGoals": {
+            "type": "number"
+          },
+          "awayTeam": {
+            "type": "number"
+          },
+          "awayTeamGoals": {
+            "type": "number"
+          },
+          "inProgress": {
+            "type": "boolean"
+          },
+          "teamHome": {
+            "type": "object",
+            "properties": {
+              "teamName": {
+                "type": "string"
+              }
+            }
+          },
+          "teamAway": {
+            "type": "object",
+            "properties": {
+              "teamName": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "EditMatch": {
+        "type": "object",
+        "properties": {
+          "homeTeamGoals": {
+            "type": "number"
+          },
+          "awayTeamGoals": {
+            "type": "number"
+          }
+        }
+      },
+      "Leaderboard": {
+        "type": "object", 
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "totalPoints": {
+            "type": "number"
+          },
+          "totalGames": {
+            "type": "number"
+          },
+          "totalVictories": {
+            "type": "number"
+          },
+          "totalDraws": {
+            "type": "number"
+          },
+          "totalLosses": {
+            "type": "number"
+          },
+          "goalsFavor": {
+            "type": "number"
+          },
+          "goalsOwn": {
+            "type": "number"
+          },
+          "goalsBalance": {
+            "type": "number"
+          },
+          "efficiency": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
