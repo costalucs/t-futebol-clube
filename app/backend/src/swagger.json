@@ -58,7 +58,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type":"object",
+                  "type": "object",
                   "$ref": "#/components/schemas/Token"
                 }
               }
@@ -120,6 +120,37 @@
           }
         }
       }
+    },
+    "/matches": {
+      "get": {
+        "sumary": "Rota get Matches",
+        "description": "Rota responsável por listar os jogos em progresso e finalizados",
+        "tags": [
+          "matches"
+        ],
+        "parameters": [
+          {
+            "name": "inProgress",
+            "in": "query",
+            "description": "Busque as partidas finalizadas ou em andamento",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de jogos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Match"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -151,6 +182,45 @@
           },
           "teamName": {
             "type": "string"
+          }
+        }
+      },
+      "Match": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "homeTeam": {
+            "type": "number"
+          },
+          "homeTeamGoals": {
+            "type": "number"
+          },
+          "awayTeam": {
+            "type": "number"
+          },
+          "awayTeamGoals": {
+            "type": "number"
+          },
+          "inProgress": {
+            "type": "boolean"
+          },
+          "teamHome": {
+            "type": "object", 
+            "properties": {
+              "teamName": {
+                "type": "string"
+              }
+            }
+          },
+          "teamAway": {
+            "type": "object", 
+            "properties": {
+              "teamName": {
+                "type": "string"
+              }
+            }
           }
         }
       }
