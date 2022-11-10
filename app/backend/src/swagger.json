@@ -21,7 +21,7 @@
         "sumary": "User Login",
         "description": "Rota responsável por logar usuário possibilitanto editar e finalizar jogos",
         "tags": [
-          "user"
+          "login"
         ],
         "requestBody": {
           "content": {
@@ -151,6 +151,144 @@
           }
         }
       }
+    },
+    "/matches/{id}/finish": {
+      "patch": {
+        "sumary": "Rota patch finalizar partida",
+        "description": "Rota responsável por finalizar uma partida. Necessário autenticação",
+        "tags": [
+          "matches"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Finalize uma partida pelo ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Finalizar partida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/match": {
+      "post": {
+        "sumary": "Rota post Matches",
+        "description": "Rota responsável por adicionar uma partida",
+        "tags": [
+          "matches"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Match"
+              },
+              "examples": {
+                "validMatch": {
+                  "value": {
+                    "homeTeam": 16,
+                    "awayTeam": 8,
+                    "homeTeamGoals": 2,
+                    "awayTeamGoals": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Adicionar Partida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Match"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Não existe time com o id disponibilizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/matches/{id}": {
+      "patch": {
+        "sumary": "Rota patch editar partida",
+        "description": "Rota responsável por editar uma partida. Necessário autenticação",
+        "tags": [
+          "matches"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Edite uma partida pelo ID",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditMatch"
+              },
+              "examples": {
+                "validMatch": {
+                  "value": {
+                    "homeTeamGoals": 1,
+                    "awayTeamGoals": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Editar partida",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -207,7 +345,7 @@
             "type": "boolean"
           },
           "teamHome": {
-            "type": "object", 
+            "type": "object",
             "properties": {
               "teamName": {
                 "type": "string"
@@ -215,7 +353,7 @@
             }
           },
           "teamAway": {
-            "type": "object", 
+            "type": "object",
             "properties": {
               "teamName": {
                 "type": "string"
@@ -223,6 +361,32 @@
             }
           }
         }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "EditMatch": {
+        "type": "object",
+        "properties": {
+          "homeTeamGoals": {
+            "type": "number"
+          },
+          "awayTeamGoals": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }
