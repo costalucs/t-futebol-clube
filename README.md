@@ -52,7 +52,11 @@ cd app/backend
 npm run test:coverage
 ```
 
-
+## Documentação API
+A ducumentação encontra-se disponível na rota: 
+```
+http://localhost:3001/api-docs/
+```
 ## Endpoints da API:
 
 #### Login
