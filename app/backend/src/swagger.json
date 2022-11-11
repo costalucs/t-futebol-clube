@@ -451,7 +451,7 @@
         }
       },
       "Leaderboard": {
-        "type": "object", 
+        "type": "object",
         "properties": {
           "name": {
             "type": "string"
@@ -488,7 +488,9 @@
     },
     "securitySchemes": {
       "bearerAuth": {
-        "type": "http",
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
         "scheme": "bearer",
         "bearerFormat": "JWT"
       }
